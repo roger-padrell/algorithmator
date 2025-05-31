@@ -1,0 +1,89 @@
+CONSTANTS:
+    G = gravitational_constant  # e.g., 6.67430e-11 (SI units) or 1.0 (normalized)
+    DT = time_step              # Simulation time step
+    SOFTENING = 1e-5            # Prevents division by zero in force calculations
+
+STRUCTURE Body:
+    mass: float
+    x, y: float         # Position
+    vx, vy: float       # Velocity
+    ax, ay: float       # Acceleration
+
+FUNCTION main():
+    n = number_of_bodies        # Total bodies (e.g., 100)
+    R = initial_radius          # Radius of the circular arrangement
+    cx, cy = center_x, center_y # Center coordinates
+    bodies = ARRAY[0..n-1] of Body
+
+    # Initialize bodies in a circle with optional tangential velocity
+    initializeBodies(bodies, n, R, cx, cy)
+    
+    # Main simulation loop
+    total_time = simulation_duration
+    time = 0.0
+    WHILE time < total_time:
+        resetAccelerations(bodies)           # Set all accelerations to zero
+        computeForces(bodies, G, SOFTENING)  # Compute net forces
+        updateVelocitiesAndPositions(bodies, DT) # Integrate motion
+        time += DT
+
+FUNCTION initializeBodies(bodies, n, R, cx, cy):
+    FOR i FROM 0 TO n-1:
+        theta = 2 * PI * i / n  # Equal angular spacing
+        
+        # Position on circle
+        bodies[i].x = cx + R * COS(theta)
+        bodies[i].y = cy + R * SIN(theta)
+        
+        # Set mass (e.g., uniform or variable)
+        bodies[i].mass = base_mass * (1.0 + RANDOM_VARIATION) 
+        
+        # Initial velocity: tangential (for orbital motion) or zero
+        speed = SQRT(G * total_mass / R)  # Approx. orbital speed
+        bodies[i].vx = -speed * SIN(theta)  # Tangential direction
+        bodies[i].vy = speed * COS(theta)
+        
+        bodies[i].ax = 0
+        bodies[i].ay = 0
+
+FUNCTION resetAccelerations(bodies):
+    FOR EACH body IN bodies:
+        body.ax = 0
+        body.ay = 0
+
+FUNCTION computeForces(bodies, G, ε):
+    n = LENGTH(bodies)
+    FOR i FROM 0 TO n-2:
+        FOR j FROM i+1 TO n-1:
+            # Calculate distance components
+            dx = bodies[j].x - bodies[i].x
+            dy = bodies[j].y - bodies[i].y
+            
+            # Compute squared distance with softening
+            r_sq = dx*dx + dy*dy + ε*ε
+            
+            # Calculate inverse cube of distance (1/r^3)
+            inv_r3 = 1.0 / (SQRT(r_sq) * r_sq)
+            
+            # Gravitational force magnitude
+            force_mag = G * bodies[i].mass * bodies[j].mass * inv_r3
+            
+            # Force components
+            fx = force_mag * dx
+            fy = force_mag * dy
+            
+            # Update accelerations (F = ma)
+            bodies[i].ax += fx / bodies[i].mass
+            bodies[i].ay += fy / bodies[i].mass
+            bodies[j].ax -= fx / bodies[j].mass
+            bodies[j].ay -= fy / bodies[j].mass
+
+FUNCTION updateVelocitiesAndPositions(bodies, DT):
+    FOR EACH body IN bodies:
+        # Update velocities (v = v0 + a*dt)
+        body.vx += body.ax * DT
+        body.vy += body.ay * DT
+        
+        # Update positions (x = x0 + v*dt)
+        body.x += body.vx * DT
+        body.y += body.vy * DT

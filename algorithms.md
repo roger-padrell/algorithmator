@@ -32,7 +32,7 @@
 - [ ] **Dragon Curve**  
 
 ## Physics & Fluid Dynamics
-- [ ] **N-Body Simulations** (gravity/galaxies)  
+- [x] **N-Body Simulations** (gravity/galaxies)  
 - [ ] **Fluid Solvers** (Stam's Navier-Stokes)  
 - [ ] **Cloth Simulation** (mass-spring systems)  
 - [ ] **Rigid Body Dynamics** (collisions)  

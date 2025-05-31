@@ -5,7 +5,7 @@ author        = "Roger Padrell Casar"
 description   = "A collection of algorithms visually represented"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["rect", "voronoiLloyd"]
+bin           = @["rect", "voronoiLloyd", "nBody2D"]
 
 # Custom silent run task
 import os, strutils
