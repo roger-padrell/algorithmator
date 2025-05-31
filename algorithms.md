@@ -1,5 +1,5 @@
 ## Geometry & Procedural Generation
-- [ ] **Voronoi Diagrams** (with Lloyd's relaxation)  
+- [x] **Voronoi Diagrams** (with Lloyd's relaxation)  
 - [ ] **Delaunay Triangulation**  
 - [ ] **Perlin/Simplex Noise** (clouds, terrain)  
 - [ ] **Wave Function Collapse** (tile-based patterns)  

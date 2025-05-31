@@ -1,0 +1,14 @@
+# Compiled executables
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.o
+*.out
+*.app
+# Ignore ALL extensionless files in the repository
+/*
+!/**/
+!*.*

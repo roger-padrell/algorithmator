@@ -1,0 +1,66 @@
+// PARAMETERS
+width = 300              // Image width in pixels
+height = 300             // Image height in pixels
+n_sites = 50             // Number of Voronoi sites
+iterations = 5           // Lloyd relaxation steps
+
+// INITIALIZATION
+sites = []               // List to store Voronoi sites
+FOR i = 0 TO n_sites-1:
+    x = RANDOM(0, width) // Random x-coordinate
+    y = RANDOM(0, height) // Random y-coordinate
+    sites.append((x, y))  // Add initial random site
+
+// LLOYD'S RELAXATION LOOP
+FOR iter = 0 TO iterations-1:
+    // 1. GENERATE VORONOI DIAGRAM
+    voronoi = 2D_ARRAY(height, width)  // Stores site index for each pixel
+    dist = 2D_ARRAY(height, width, INF) // Initialize distances
+    
+    FOR EACH site_index, (sx, sy) IN sites:
+        FOR EACH y_pixel IN [0, height-1]:
+            FOR EACH x_pixel IN [0, width-1]:
+                // Calculate squared Euclidean distance
+                d = (x_pixel - sx)^2 + (y_pixel - sy)^2
+                
+                // Update if closer than current minimum
+                IF d < dist[y_pixel][x_pixel]:
+                    dist[y_pixel][x_pixel] = d
+                    voronoi[y_pixel][x_pixel] = site_index
+    
+    // 2. COMPUTE CENTROIDS (CELL AVERAGES)
+    sum_x = ARRAY(n_sites, 0)  // Sum of x-coordinates per cell
+    sum_y = ARRAY(n_sites, 0)  // Sum of y-coordinates per cell
+    counts = ARRAY(n_sites, 0) // Pixel count per cell
+    
+    FOR EACH y IN [0, height-1]:
+        FOR EACH x IN [0, width-1]:
+            site_idx = voronoi[y][x]
+            sum_x[site_idx] += x
+            sum_y[site_idx] += y
+            counts[site_idx] += 1
+    
+    // 3. UPDATE SITE POSITIONS
+    new_sites = []
+    FOR site_idx = 0 TO n_sites-1:
+        IF counts[site_idx] > 0:
+            centroid_x = sum_x[site_idx] / counts[site_idx]
+            centroid_y = sum_y[site_idx] / counts[site_idx]
+            new_sites.append((centroid_x, centroid_y))
+        ELSE:
+            // Keep original if cell empty
+            new_sites.append(sites[site_idx])
+    
+    sites = new_sites  // Update sites for next iteration
+
+// VISUALIZATION
+colors = GENERATE_RANDOM_COLORS(n_sites)  // One RGB per site
+image = 3D_ARRAY(height, width, 3)        // RGB image buffer
+
+FOR EACH y IN [0, height-1]:
+    FOR EACH x IN [0, width-1]:
+        site_idx = voronoi[y][x]        // Get site index for pixel
+        image[y][x] = colors[site_idx]  // Assign site's color
+
+DISPLAY_IMAGE(image)
+PLOT_POINTS(sites)  // Draw black dots at site positions
