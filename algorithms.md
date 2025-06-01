@@ -17,13 +17,13 @@
 - [ ] **Physarum (Slime Mold) Simulation**  
 - [ ] **Particle Systems** (fire, smoke, fluid)  
 - [ ] **Cellular Automata**:
-  - [ ] Conway's **Game of Life**  
+  - [x] Conway's **Game of Life**  
   - [ ] **Brian's Brain**  
   - [ ] **Wireworld**  
   - [ ] **Sandpile** (Abelian sandpile)  
 
 ## Fractals & Mathematical Art
-- [ ] **Mandelbrot/Julia Sets**  
+- [ ] **Mandelbrot**  
 - [ ] **Newton Fractals** (root-finding basins)  
 - [ ] **Strange Attractors** (Lorenz, Rössler)  
 - [ ] **Barnsley Fern** (iterated functions)  
@@ -36,7 +36,7 @@
 - [ ] **Fluid Solvers** (Stam's Navier-Stokes)  
 - [ ] **Cloth Simulation** (mass-spring systems)  
 - [ ] **Rigid Body Dynamics** (collisions)  
-- [ ] **Granular Material Simulation** (sand, grains)  
+- [x] **Granular Material Simulation** (sand, grains)  
 - [ ] **Ray Marching** (SDF-based 3D scenes)  
 - [ ] **Metaballs** (organic blobs)  
 
