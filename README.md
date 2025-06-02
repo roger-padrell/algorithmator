@@ -1,4 +1,4 @@
-# Algorithmator ![Completed 4/64](https://img.shields.io/badge/Completed-2/64-blue)
+# Algorithmator ![Completed 4/64](https://img.shields.io/badge/Completed-4/64-blue)
 Visual representations of algorithms
 
 They will be implemented using [Nim](https://nim-lang.org/) and [Drawim](https://github.com/GabrielLasso/drawim).
